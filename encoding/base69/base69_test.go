@@ -36,3 +36,23 @@ func TestBytesToInt(t *testing.T) {
 		}
 	}
 }
+
+var dePairs = []struct {
+	d, e []byte
+}{
+	{[]byte(""), []byte("")},
+	{[]byte("a"), []byte("")},
+	{[]byte("abcdef"), []byte("")},
+	{[]byte("abcdefg"), []byte("wATBHB2AjAVAHBiB")},
+	{[]byte("abcdefgh"), []byte("wATBHB2AjAVAHBiB")},
+	{[]byte("abcdefg0123456"), []byte("wATBHB2AjAVAHBiBYAMAmAjAZALBlB2A")},
+}
+
+func TestEncodeHead(t *testing.T) {
+	for _, p := range dePairs {
+		got := encodeHead(p.d)
+		if string(got) != string(p.e) {
+			t.Errorf("encodeArrayWithLength(%q) = %q, want %q", p.d, got, p.e)
+		}
+	}
+}
