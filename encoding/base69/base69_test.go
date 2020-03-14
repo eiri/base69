@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-var ibPairs = []struct {
-	i int
-	b []byte
+var intPairs = []struct {
+	in  int
+	out []byte
 }{
 	{0, []byte("AA")},
 	{1, []byte("BA")},
@@ -20,25 +20,25 @@ var ibPairs = []struct {
 }
 
 func TestIntToBytes(t *testing.T) {
-	for _, p := range ibPairs {
-		got := intToBytes(p.i)
-		if !reflect.DeepEqual(got, p.b) {
-			t.Errorf("intToBytes(%d) = %q, want %q", p.i, got, p.b)
+	for _, p := range intPairs {
+		got := intToBytes(p.in)
+		if !reflect.DeepEqual(got, p.out) {
+			t.Errorf("intToBytes(%d) = %q, want %q", p.in, got, p.out)
 		}
 	}
 }
 
 func TestBytesToInt(t *testing.T) {
-	for _, p := range ibPairs {
-		got := bytesToInt(p.b)
-		if got != p.i {
-			t.Errorf("bytesToInt(%q) = %d, want %d", p.b, got, p.i)
+	for _, p := range intPairs {
+		got := bytesToInt(p.out)
+		if got != p.in {
+			t.Errorf("bytesToInt(%q) = %d, want %d", p.out, got, p.in)
 		}
 	}
 }
 
-var dePairs = []struct {
-	d, e []byte
+var headPairs = []struct {
+	in, out []byte
 }{
 	{[]byte(""), []byte("")},
 	{[]byte("a"), []byte("")},
@@ -49,10 +49,10 @@ var dePairs = []struct {
 }
 
 func TestEncodeHead(t *testing.T) {
-	for _, p := range dePairs {
-		got := encodeHead(p.d)
-		if string(got) != string(p.e) {
-			t.Errorf("encodeHead(%q) = %q, want %q", p.d, got, p.e)
+	for _, p := range headPairs {
+		got := encodeHead(p.in)
+		if string(got) != string(p.out) {
+			t.Errorf("encodeHead(%q) = %q, want %q", p.in, got, p.out)
 		}
 	}
 }
