@@ -52,7 +52,7 @@ func TestEncodeHead(t *testing.T) {
 	for _, p := range dePairs {
 		got := encodeHead(p.d)
 		if string(got) != string(p.e) {
-			t.Errorf("encodeArrayWithLength(%q) = %q, want %q", p.d, got, p.e)
+			t.Errorf("encodeHead(%q) = %q, want %q", p.d, got, p.e)
 		}
 	}
 }
