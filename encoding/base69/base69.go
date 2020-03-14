@@ -1,6 +1,7 @@
 package base69
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -35,6 +36,19 @@ func encodeHead(src []byte) []byte {
 			chars = intToBytes(int(shifted))
 			dst = append(dst, chars...)
 		}
+	}
+	return dst
+}
+
+func Encode(src []byte) []byte {
+	dst := encodeHead(src)
+	extraBytes := len(src) % 7
+	if extraBytes > 0 {
+		extra := make([]byte, 7)
+		copy(extra, src[(len(src)-extraBytes):])
+		tail := encodeHead(extra)
+		dst = append(dst, tail...)
+		copy(dst[len(dst)-2:], fmt.Sprintf("%d=", 7-extraBytes))
 	}
 	return dst
 }

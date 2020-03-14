@@ -56,3 +56,24 @@ func TestEncodeHead(t *testing.T) {
 		}
 	}
 }
+
+var pairs = []struct {
+	in, out []byte
+}{
+	{[]byte(""), []byte("")},
+	{[]byte("a"), []byte("wA-AAAAAAAAAAA6=")},
+	{[]byte("abcdef"), []byte("wATBHB2AjAVAHB1=")},
+	{[]byte("abcdefg"), []byte("wATBHB2AjAVAHBiB")},
+	{[]byte("abcdefgh"), []byte("wATBHB2AjAVAHBiB0AAAAAAAAAAAAA6=")},
+	{[]byte("abcdefg0123456"), []byte("wATBHB2AjAVAHBiBYAMAmAjAZALBlB2A")},
+	{[]byte("brown fox"), []byte("xAcAIByB7A4A-AhB3AZBAAAAAAAAAA5=")},
+}
+
+func TestEncode(t *testing.T) {
+	for _, p := range pairs {
+		got := Encode(p.in)
+		if string(got) != string(p.out) {
+			t.Errorf("Encode(%q) = %q, want %q", p.in, got, p.out)
+		}
+	}
+}
