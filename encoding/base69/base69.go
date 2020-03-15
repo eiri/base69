@@ -40,6 +40,26 @@ func encodeHead(src []byte) []byte {
 	return dst
 }
 
+func decodeChunk(src []byte) []byte {
+	paddedBytes := src[len(src)-1] == 61
+	decoded := make([]byte, 8)
+	for i := 0; i < 8; i++ {
+		if i == 7 && paddedBytes {
+			decoded[i] = 0x0
+		} else {
+			k, l := i*2, i*2+2
+			decoded[i] = byte(bytesToInt(src[k:l]))
+		}
+	}
+	dst := make([]byte, 7)
+	for i := 0; i < 7; i++ {
+		t1 := decoded[i] << (i + 1)
+		t2 := decoded[i+1] >> (7 - i - 1)
+		dst[i] = t1 | t2
+	}
+	return dst
+}
+
 func Encode(src []byte) []byte {
 	dst := encodeHead(src)
 	extraBytes := len(src) % 7

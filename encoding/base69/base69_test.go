@@ -57,6 +57,24 @@ func TestEncodeHead(t *testing.T) {
 	}
 }
 
+var chunkPairs = []struct {
+	in, out []byte
+}{
+	{[]byte("wA-AAAAAAAAAAA6="), []byte("a\x00\x00\x00\x00\x00\x00")},
+	{[]byte("wATBHB2AjAVAHB1="), []byte("abcdef\x00")},
+	{[]byte("wATBHB2AjAVAHBiB"), []byte("abcdefg")},
+	{[]byte("wATBHB2AjAVAHBiBYAMAmAjAZALBlB2A"), []byte("abcdefg")},
+}
+
+func TestDecodeChunk(t *testing.T) {
+	for _, p := range chunkPairs {
+		got := decodeChunk(p.in)
+		if string(got) != string(p.out) {
+			t.Errorf("decodeChunk(%q) = %q, want %q", p.in, got, p.out)
+		}
+	}
+}
+
 var pairs = []struct {
 	in, out []byte
 }{
