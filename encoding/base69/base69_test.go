@@ -95,3 +95,12 @@ func TestEncode(t *testing.T) {
 		}
 	}
 }
+
+func TestDecode(t *testing.T) {
+	for _, p := range pairs {
+		got := Decode(p.out)
+		if string(got) != string(p.in) {
+			t.Errorf("Decode(%q) = %q, want %q", p.out, got, p.in)
+		}
+	}
+}
