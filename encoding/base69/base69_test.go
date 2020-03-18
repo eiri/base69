@@ -1,8 +1,10 @@
 package base69
 
 import (
+	"math/rand"
 	"reflect"
 	"testing"
+	"time"
 )
 
 var intPairs = []struct {
@@ -101,6 +103,22 @@ func TestDecode(t *testing.T) {
 		got := Decode(p.out)
 		if string(got) != string(p.in) {
 			t.Errorf("Decode(%q) = %q, want %q", p.out, got, p.in)
+		}
+	}
+}
+
+func TestEncodeDecode(t *testing.T) {
+	for l := 6; l <= 69; l += 7 {
+		testBytes := make([]byte, l)
+		rand.Seed(time.Now().UnixNano())
+		rand.Read(testBytes)
+		encoded := Encode(testBytes)
+		if reflect.DeepEqual(encoded, testBytes) {
+			t.Error("Encode output is equal to input")
+		}
+		decoded := Decode(encoded)
+		if !reflect.DeepEqual(decoded, testBytes) {
+			t.Error("Decode can't decode encoded bin back")
 		}
 	}
 }
